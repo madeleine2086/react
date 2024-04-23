@@ -13,38 +13,33 @@ class StatefulGreetingWithPrevState extends React.Component {
     }
 
     handleClick() {
-        this.setState({
-            introduction: this.state.introduction === "Hello!" ? "Goodbye" : "Hello!",
-            buttonText: this.state.buttonText === "Exit" ? "Enter" : "Exit",
-        }, ()=>{
-        console.log("new state ", this.state.introduction);
-        console.log("new state ", this.state.buttonText);
+        this.setState((prevState, prevProps) => {
+            console.log("Previous State:", prevState);
+            console.log("Previous Props:", prevProps);
+            return {
+                introduction: prevState.introduction === "Hello!" ? "Goodbye" : "Hello!",
+                buttonText: prevState.buttonText === "Exit" ? "Enter" : "Exit"
+            }
         });
-        console.log(this.state.introduction);
-        console.log(this.state.buttonText);
     }
 
     incrementState() {
-        this.setState({
-            count: this.state.count + 1
+        this.setState((prevState, prevProps) => {
+          console.log("Previous State:", prevState);
+          console.log("Previous Props:", prevProps);
+          return {
+            count: prevState.count + 1,
+          };
         });
-        console.log(this.state.count);
     }
 
-    incrementFive() {
-        this.incrementState()
-        this.incrementState()
-        this.incrementState()
-        this.incrementState()
-        this.incrementState()
-    }
 
     render() {
         return (
             <div>
                 <h1>{this.state.introduction} {this.props.greeting}</h1>
                 <button onClick={() => this.handleClick()}>{this.state.buttonText}</button>
-                <button onClick={() => this.incrementFive()}>Increment Five</button>
+                <button onClick={() => this.incrementState()}>Increment</button>
                 <p>You have clicked {this.state.count} times!</p>
             </div>
         )
